@@ -1,4 +1,4 @@
-joel.morris@cnanational.com/puppet-pipelines-mvn-build-image:
+ccjoelm/puppet-pipelines-mvn-build-image:
 
   Build:
     - echo "--Creating Docker Image--"
