@@ -25,14 +25,24 @@ RUN curl -sSL https://pipelines.puppet.com/download/client | sh
 
 # Install Docker
 # Note. This is only necessary if you plan on building Docker images
-RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D \
-    &&  sh -c "echo 'deb https://apt.dockerproject.org/repo ubuntu-trusty main' > /etc/apt/sources.list.d/docker.list" \
-    &&  apt-get update -y \
-    &&  apt-get purge -y lxc-docker \
-    &&  apt-get -y install docker-engine \
-    &&  sh -c 'curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose' \
-    &&  chmod +x /usr/local/bin/docker-compose \
-    &&  docker -v
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+
+RUN add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/debian \
+   $(lsb_release -cs) \
+   stable"
+
+RUN apt-get update -y \
+   && apt-get -y install docker-ce
+
+#RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D \
+#    &&  sh -c "echo 'deb https://apt.dockerproject.org/repo ubuntu-trusty main' > /etc/apt/sources.list.d/docker.list" \
+#    &&  apt-get update -y \
+#    &&  apt-get purge -y lxc-docker \
+#    &&  apt-get -y install docker-engine \
+#    &&  sh -c 'curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose' \
+#    &&  chmod +x /usr/local/bin/docker-compose \
+#    &&  docker -v
 
 # Setup a volume for writing Docker layers/images
 VOLUME /var/lib/docker
